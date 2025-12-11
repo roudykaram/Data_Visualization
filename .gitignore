@@ -1,0 +1,14 @@
+# OS / éditeurs
+.DS_Store
+*.swp
+.vscode/
+
+# Python / notebooks
+__pycache__/
+.ipynb_checkpoints/
+
+# Node (si tu fais du npm plus tard)
+node_modules/
+
+# Données dérivées (optionnel)
+data/processed/
