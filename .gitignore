@@ -10,5 +10,3 @@ __pycache__/
 # Node (si tu fais du npm plus tard)
 node_modules/
 
-# Données dérivées (optionnel)
-data/processed/
