@@ -82,11 +82,11 @@ def map_anxiety_outcome(val):
     return 0
 
 def main():
-    print(f"🔄 Lecture du fichier : {INPUT_PATH}")
+    print(f" Lecture du fichier : {INPUT_PATH}")
     try:
         df = pd.read_csv(INPUT_PATH)
     except FileNotFoundError:
-        print("❌ ERREUR : Fichier introuvable.")
+        print(" ERREUR : Fichier introuvable.")
         return
 
     # 1. Suppression question piège
@@ -174,7 +174,7 @@ def main():
     # Sauvegarde
     df.to_csv(OUTPUT_PATH, index=False)
     
-    print(f"✅ Fichier FINAL généré : {OUTPUT_PATH}")
+    print(f" Fichier FINAL généré : {OUTPUT_PATH}")
     print("\n--- Nouvelles Colonnes Ajoutées ---")
     print(df[['use_morning', 'use_night', 'cycle_trigger_numeric']].head())
 
