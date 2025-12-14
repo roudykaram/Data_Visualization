@@ -84,11 +84,11 @@ def split_multiselect(x):
 
 
 def main():
-    print(f"🔄 Lecture du fichier : {INPUT_PATH}")
+    print(f" Lecture du fichier : {INPUT_PATH}")
     try:
         df = pd.read_csv(INPUT_PATH)
     except FileNotFoundError:
-        print("❌ ERREUR : Fichier introuvable.")
+        print(" ERREUR : Fichier introuvable.")
         print("   1. Vérifie que le fichier est bien dans : data/raw/")
         print("   2. Vérifie qu'il s'appelle bien : Usage_des_reseaux_sociaux.csv")
         return
@@ -140,7 +140,7 @@ def main():
 
 
 
-    # ✅ AJOUT 1 : usage_intensity_score (1 -> 6)
+    #  AJOUT 1 : usage_intensity_score (1 -> 6)
     intensity_mapping = {
         'Moins de 30 minutes': 1,
         '30 min – 1 heure': 2,
@@ -151,7 +151,7 @@ def main():
     }
     df["usage_intensity_score"] = df["daily_time_cat"].map(intensity_mapping)
 
-    # ✅ AJOUT 2 : anxiety_delta (-1 / 0 / +1)
+    #  AJOUT 2 : anxiety_delta (-1 / 0 / +1)
     # Diminue = -1, Ne change pas = 0, Augmente = +1
     anxiety_delta_map = {
         "diminue": -1,
@@ -197,7 +197,7 @@ def main():
     # 8. Sauvegarde
     df.to_csv(OUTPUT_PATH, index=False)
 
-    print(f"✅ Fichier PROPRE généré : {OUTPUT_PATH}")
+    print(f" Fichier PROPRE généré : {OUTPUT_PATH}")
     print("\n--- Vérification des Pays (Top 10) ---")
     print(df['country'].value_counts().head(10))
 
