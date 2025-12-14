@@ -8,73 +8,39 @@ INPUT_PATH = "./data/raw/Usage_des_reseaux_sociaux.csv"
 OUTPUT_FOLDER = "./data/processed"
 OUTPUT_PATH = os.path.join(OUTPUT_FOLDER, "questionnaire_clean.csv")
 
-# Création du dossier si nécessaire
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-# --- FONCTIONS UTILITAIRES ---
+# --- FONCTIONS DE NETTOYAGE ---
 
 def extract_int(value):
-    """Extrait le premier entier trouvé, sinon NaN."""
-    if pd.isna(value):
-        return np.nan
+    if pd.isna(value): return np.nan
     m = re.search(r"\d+", str(value))
     return float(m.group()) if m else np.nan
 
 def normalize_country(val):
-    """
-    Nettoyage des pays en utilisant TES listes exactes.
-    La comparaison se fait en minuscule pour ne rien rater.
-    """
-    if pd.isna(val):
-        return "Unknown"
-    
-    # On convertit l'entrée utilisateur en texte minuscule propre
+    if pd.isna(val): return "Unknown"
     val_clean = str(val).lower().strip()
     
-    # --- TES LISTES EXACTES ---
-    
-    # 1. TUNISIE
-    liste_tunisie = [
-        'tunis', 'Tunisie', 'tunisie', 'Sfax', 'jelma', 'monastir', 
-        'hammem chat', 'Médenine', 'medenine', 'عين دراهم', 'Tunis', 
-        'TUNISIE', 'TUNISIA', 'Tunis / Tunisie', 'Tunis . Tunisie'
-    ]
-    # On vérifie chaque mot de ta liste
+    # Listes de pays (Ta configuration validée)
+    liste_tunisie = ['tunis', 'Tunisie', 'tunisie', 'Sfax', 'jelma', 'monastir', 'hammem chat', 'Médenine', 'medenine', 'عين دراهم', 'Tunis', 'TUNISIE', 'TUNISIA', 'Tunis / Tunisie', 'Tunis . Tunisie']
     for mot in liste_tunisie:
-        # On compare minuscule contre minuscule (mot.lower() vs val_clean)
-        if mot.lower() in val_clean:
-            return 'Tunisia'
+        if mot.lower() in val_clean: return 'Tunisia'
 
-    # 2. FRANCE
     liste_france = ['france', 'Lyon /France', 'Lyon . France', 'lyon', 'paris', 'marseille']
     for mot in liste_france:
-        if mot.lower() in val_clean:
-            return 'France'
+        if mot.lower() in val_clean: return 'France'
 
-    # 3. LIBAN
-    liste_liban = [
-        'liban', 'lebanon', 'le Liban', 'Libanon', 'Liban', 
-        'Lebanese University', 'Lebanon', 'Beyrouth', 'Beirut'
-    ]
+    liste_liban = ['liban', 'lebanon', 'le Liban', 'Libanon', 'Liban', 'Lebanese University', 'Lebanon', 'Beyrouth', 'Beirut']
     for mot in liste_liban:
-        if mot.lower() in val_clean:
-            return 'Lebanon'
+        if mot.lower() in val_clean: return 'Lebanon'
 
-    # 4. USA
-    liste_usa = [
-        'usa', 'new york', 'New York', 'United States', 
-        'United States of America', 'US', 'U.S.A', 
-        'États-Unis', 'etats unis', 'Etats Unis'
-    ]
+    liste_usa = ['usa', 'new york', 'New York', 'United States', 'United States of America', 'US', 'U.S.A', 'États-Unis', 'etats unis', 'Etats Unis']
     for mot in liste_usa:
-        if mot.lower() in val_clean:
-            return 'USA'
+        if mot.lower() in val_clean: return 'USA'
 
-    # 5. AUTRES
     if 'canada' in val_clean: return 'Canada'
     if 'luxembourg' in val_clean: return 'Luxembourg'
     
-    # Si on arrive ici, c'est vraiment "Other" (ou une orthographe imprévue)
     return "Other"
 
 def split_multiselect(x):
@@ -82,21 +48,51 @@ def split_multiselect(x):
     items = [i.strip() for i in str(x).split(",")]
     return [i for i in items if i]
 
+# --- FONCTIONS SCORE DE RISQUE ---
+def map_frequency_to_score(val):
+    if pd.isna(val): return 0
+    v = str(val).lower().strip()
+    if any(x in v for x in ['jamais', 'non', 'pas du tout']): return 0
+    if any(x in v for x in ['rarement']): return 0.25
+    if any(x in v for x in ['parfois']): return 0.5
+    if any(x in v for x in ['souvent', 'toujours', 'fréquemment', 'oui']): return 1.0
+    return 0
+
+def map_productivity_score(val):
+    try:
+        return 1.0 if float(val) >= 5 else 0.0
+    except:
+        return 0.0
+
+# --- NOUVEAU : FONCTIONS CERCLE VICIEUX ---
+def map_anxiety_trigger(val):
+    """Quand je suis anxieux, j'utilise plus ? (Déclencheur)"""
+    # Oui -> 2 (Fort), Parfois -> 1 (Moyen), Non -> 0 (Faible)
+    v = str(val).lower().strip()
+    if 'oui' in v: return 2
+    if 'parfois' in v: return 1
+    return 0
+
+def map_anxiety_outcome(val):
+    """Après utilisation, mon anxiété... ? (Conséquence)"""
+    # Augmente -> 1 (Mauvais), Ne change pas -> 0, Diminue -> -1 (Bon)
+    v = str(val).lower().strip()
+    if 'augmente' in v: return 1
+    if 'diminue' in v: return -1
+    return 0
 
 def main():
-    print(f" Lecture du fichier : {INPUT_PATH}")
+    print(f"🔄 Lecture du fichier : {INPUT_PATH}")
     try:
         df = pd.read_csv(INPUT_PATH)
     except FileNotFoundError:
-        print(" ERREUR : Fichier introuvable.")
-        print("   1. Vérifie que le fichier est bien dans : data/raw/")
-        print("   2. Vérifie qu'il s'appelle bien : Usage_des_reseaux_sociaux.csv")
+        print("❌ ERREUR : Fichier introuvable.")
         return
 
     # 1. Suppression question piège
     df = df.drop(columns=["Quelle est la couleur du ciel?"], errors="ignore")
 
-    # 2. Renommage des colonnes
+    # 2. Renommage
     rename_map = {
         "Horodateur": "timestamp",
         "1. Quel est votre âge ?": "age",
@@ -129,77 +125,58 @@ def main():
     }
     df = df.rename(columns=rename_map)
 
-    # 3. Nettoyages de base
+    # 3. SUPPRESSION DU TIMESTAMP (Inutile)
+    df = df.drop(columns=['timestamp'], errors='ignore')
+
+    # Nettoyages standards
     df["age"] = df["age"].apply(extract_int)
-
-    # APPLICATION DE TA FONCTION PAYS PERSONNALISÉE
     df["country"] = df["country"].apply(normalize_country)
-
+    
     gender_map = {'Homme': 'Male', 'Femme': 'Female', 'Autre': 'Other', 'Je préfère ne pas répondre': 'Other'}
     df['gender'] = df['gender'].map(gender_map)
 
-
-
-    #  AJOUT 1 : usage_intensity_score (1 -> 6)
-    intensity_mapping = {
-        'Moins de 30 minutes': 1,
-        '30 min – 1 heure': 2,
-        '1–2 heures': 3,
-        '2–3 heures': 4,
-        '3–4 heures': 5,
-        'Plus de 4 heures': 6
+    time_mapping = {
+        'Moins de 30 minutes': 0.25, '30 min – 1 heure': 0.75,
+        '1–2 heures': 1.5, '2–3 heures': 2.5,
+        '3–4 heures': 3.5, 'Plus de 4 heures': 5.0
     }
-    df["usage_intensity_score"] = df["daily_time_cat"].map(intensity_mapping)
+    df['daily_time_numeric'] = df['daily_time_cat'].map(time_mapping)
 
-    #  AJOUT 2 : anxiety_delta (-1 / 0 / +1)
-    # Diminue = -1, Ne change pas = 0, Augmente = +1
-    anxiety_delta_map = {
-        "diminue": -1,
-        "ne change pas": 0,
-        "augmente": 1
-    }
-    df["anxiety_delta"] = (
-        df["anxiety_after"]
-        .astype(str)
-        .str.lower()
-        .str.strip()
-        .replace({"nan": np.nan})
-        .map(anxiety_delta_map)
-    )
-
-    # 5. Gestion des listes
+    # Listes
     for c in ["platforms", "day_moments", "activities", "emotions"]:
         df[c] = df[c].apply(split_multiselect)
 
-    # 6. Conversion Booléens
-    yn_map = {"oui": True, "non": False}
-    bool_cols = [
-        "sleep_difficulties", "failed_reduction", "time_loss",
-        "notification_compulsion", "productivity_impact",
-        "guilt_after_use", "usage_is_healthy"
-    ]
-    for c in bool_cols:
-        if c in df.columns:
-            df[c] = df[c].astype(str).str.lower().str.strip().replace({"nan": np.nan}).map(yn_map)
+    # 4. NOUVEAU : COLONNES TEMPORELLES POUR LA VISUALISATION
+    # Cela te permet de dire : "Pour tous les gens qui utilisent le MATIN, quelle est leur anxiété ?"
+    # On crée 4 colonnes booléennes (0 ou 1)
+    df['use_morning'] = df['day_moments'].astype(str).apply(lambda x: 1 if 'Matin' in x else 0)
+    df['use_afternoon'] = df['day_moments'].astype(str).apply(lambda x: 1 if 'Après-midi' in x else 0)
+    df['use_evening'] = df['day_moments'].astype(str).apply(lambda x: 1 if 'Soir' in x else 0)
+    df['use_night'] = df['day_moments'].astype(str).apply(lambda x: 1 if 'Nuit' in x else 0)
 
-    # 7. CALCUL DU SCORE DE RISQUE
-    risk_components = [
-        "time_loss", "failed_reduction", "sleep_difficulties",
-        "notification_compulsion", "guilt_after_use", "productivity_impact"
-    ]
-    tmp_risk = df[risk_components].fillna(False).astype(int)
+    # 5. NOUVEAU : COLONNES CERCLE VICIEUX (Numeric)
+    # Pour changer la couleur ou la taille des points selon l'intensité du cycle
+    df['cycle_trigger_numeric'] = df['anxiety_more_usage'].apply(map_anxiety_trigger)
+    df['cycle_outcome_numeric'] = df['anxiety_after'].apply(map_anxiety_outcome)
 
-    # si tu veux aussi le raw :
-    df["risk_score_raw"] = tmp_risk.sum(axis=1)
+    # 6. Score de Risque (Gardé identique)
+    df['risk_sleep'] = df['sleep_difficulties'].apply(map_frequency_to_score)
+    df['risk_timeloss'] = df['time_loss'].apply(map_frequency_to_score)
+    df['risk_notification'] = df['notification_compulsion'].apply(map_frequency_to_score)
+    df['risk_guilt'] = df['guilt_after_use'].apply(map_frequency_to_score)
+    df['risk_failed_reduction'] = df['failed_reduction'].apply(map_frequency_to_score)
+    df['risk_productivity'] = df['productivity_impact'].apply(map_productivity_score)
 
-    df["risk_score"] = (df["risk_score_raw"] / len(risk_components)) * 100
+    risk_columns = ['risk_sleep', 'risk_timeloss', 'risk_notification', 'risk_guilt', 'risk_failed_reduction', 'risk_productivity']
+    df['total_risk_points'] = df[risk_columns].sum(axis=1)
+    df['risk_score'] = (df['total_risk_points'] / 6) * 100
 
-    # 8. Sauvegarde
+    # Sauvegarde
     df.to_csv(OUTPUT_PATH, index=False)
-
-    print(f" Fichier PROPRE généré : {OUTPUT_PATH}")
-    print("\n--- Vérification des Pays (Top 10) ---")
-    print(df['country'].value_counts().head(10))
+    
+    print(f"✅ Fichier FINAL généré : {OUTPUT_PATH}")
+    print("\n--- Nouvelles Colonnes Ajoutées ---")
+    print(df[['use_morning', 'use_night', 'cycle_trigger_numeric']].head())
 
 if __name__ == "__main__":
     main()
