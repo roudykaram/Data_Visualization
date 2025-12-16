@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plateformes vs Bien-être</title>
+
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>Plateformes et bien-être</h1>
+  </header>
+
+  <main>
+
+    <!-- ====== VIZ 1 : Questionnaire ====== -->
+    <section class="card">
+      <div class="cardHeader">
+        <h2>Questionnaire — distribution par plateforme</h2>
+
+        <div class="controls">
+          <label>
+            Variable :
+            <select id="metricQ">
+              <option value="anxiety">Anxiété (anxiety_score)</option>
+              <option value="mood">Mood impact (mood_impact)</option>
+            </select>
+          </label>
+
+          <label>
+            Min réponses (n) :
+            <select id="minNQ">
+              <option value="1">1</option>
+              <option value="3">3</option>
+              <option value="5" selected>5</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="chartQ"></div>
+      <p class="hint">On filtre les plateformes avec peu de réponses pour éviter des comparaisons trompeuses.</p>
+    </section>
+
+    <!-- ====== VIZ 2 : Kaggle ====== -->
+    <section class="card">
+      <div class="cardHeader">
+        <h2>Kaggle — stress level par plateforme</h2>
+
+        <div class="controls">
+          <button id="toggleK" class="btn">Vue : Boxplot</button>
+
+          <label>
+            Min réponses (n) :
+            <select id="minNK">
+              <option value="1">1</option>
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="chartK"></div>
+      <p class="hint">Boxplot = distributions. Bar chart = moyenne (simple à lire mais moins riche).</p>
+    </section>
+
+  </main>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
