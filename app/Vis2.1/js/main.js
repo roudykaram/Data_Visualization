@@ -284,8 +284,8 @@ function draw(data, ageBin) {
       .text(txt);
   }
 
-  pctText(width * 0.50, height * 0.18, `${Math.round(pAnxietyUp * 100)}%`, getCss("--canvas") || "#f6f7f9");
-  pctText(width * 0.50, height * 0.93, `${Math.round(pCoping * 100)}%`, getCss("--canvas") || "#f6f7f9");
+  pctText(width * 0.50, height * 0.40, `${Math.round(pAnxietyUp * 100)}%`, getCss("--canvas") || "#f6f7f9");
+  pctText(width * 0.50, height * 0.80, `${Math.round(pCoping * 100)}%`, getCss("--canvas") || "#f6f7f9");
 
   // ---------- circles ----------
   function drawNode(node, fill, textColor, subColor) {
