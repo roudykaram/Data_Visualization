@@ -26,6 +26,7 @@ function rowParser(d) {
   const age = Number(d.age);
   const outcome = Number(d.cycle_outcome_numeric);   // -1 / 0 / 1
   const trigger = Number(d.cycle_trigger_numeric);   // 0..2
+
   return {
     ...d,
     age: Number.isFinite(age) ? age : null,
@@ -97,7 +98,6 @@ let GLOBAL_DATA = [];
   try {
     GLOBAL_DATA = await d3.csv(DATA_PATH, rowParser);
 
-    // preuve CSV chargé
     console.log("CSV chargé ✅ lignes =", GLOBAL_DATA.length);
     console.log("Exemple 3 lignes :", GLOBAL_DATA.slice(0, 3));
     console.log("Colonnes détectées :", Object.keys(GLOBAL_DATA[0] || {}));
@@ -150,9 +150,14 @@ function draw(data, ageBin) {
   const n = data.length;
 
   // ---------- metrics ----------
-  const pAnxietyUp = data.filter(d => d.cycle_outcome_numeric === 1).length / n;
-  const avgTrigger = d3.mean(data, d => d.cycle_trigger_numeric ?? 0);
-  const pCoping = (Number.isFinite(avgTrigger) ? avgTrigger : 0) / 2;
+  // Usage -> Anxiété : % dont l'anxiété augmente après usage (Q13)
+  const nAnxietyUp = data.filter(d => d.cycle_outcome_numeric === 1).length;
+  const pAnxietyUp = nAnxietyUp / n;
+
+  // ✅ Anxiété -> Usage : % qui déclarent scroller + quand anxieux (Q12)
+  // cycle_trigger_numeric: 2=Oui, 1=Parfois, 0=Non
+  const nCoping = data.filter(d => (d.cycle_trigger_numeric ?? 0) >= 1).length; // Oui + Parfois
+  const pCoping = nCoping / n;
 
   // outcome majority for anxiety circle color
   const counts = d3.rollup(
@@ -179,7 +184,9 @@ function draw(data, ageBin) {
     anxietyLabel = "Anxiété diminue (majoritaire)";
   }
 
-  console.log(`DRAW "${ageBin.label}" N=${n}`, { pAnxietyUp, pCoping, cMinus, cZero, cPlus });
+  console.log(`DRAW "${ageBin.label}" N=${n}`, {
+    nAnxietyUp, pAnxietyUp, nCoping, pCoping, cMinus, cZero, cPlus
+  });
 
   // ---------- background canvas ----------
   const pad = 14;
@@ -205,19 +212,19 @@ function draw(data, ageBin) {
     .attr("flood-color", "#000")
     .attr("flood-opacity", 0.12);
 
-  // ✅ Static arrow colors (requested)
-  const colorTop = "#111827"; // Usage → Anxiété (black)
-  const colorBot = "gray"; // Anxiété → Usage (white)
+  // ✅ Two arrow colors (requested): top = black, bottom = light gray
+  const colorTop = "#111827";
+  const colorBot = "#cbd5e1";
 
-  // marker with fixed size (does NOT scale with strokeWidth)
+  // marker with fixed size (triangle visible)
   function makeMarker(id, color) {
     const m = defs.append("marker")
       .attr("id", id)
       .attr("viewBox", "0 0 12 12")
-      .attr("refX", 9)
+      .attr("refX", 11)       // pushes triangle to the end
       .attr("refY", 6)
-      .attr("markerWidth", 5)
-      .attr("markerHeight", 5)
+      .attr("markerWidth", 10) // bigger triangle
+      .attr("markerHeight", 10)
       .attr("orient", "auto");
 
     m.append("path")
@@ -234,7 +241,7 @@ function draw(data, ageBin) {
     y: height * 0.58,
     r: Math.max(56, Math.min(94, width * 0.075)),
     label: "Usage",
-    sub: "scroller / réseaux"
+    sub: "réseaux sociaux"
   };
 
   const nodeAnx = {
@@ -245,8 +252,8 @@ function draw(data, ageBin) {
     sub: "après usage"
   };
 
-  // ✅ STATIC thickness (requested): never changes
-  const STATIC_W = 5;
+  // ✅ STATIC thickness (requested)
+  const STATIC_W = 4; // <- change this if you want thinner/thicker
   const wU2A = STATIC_W;
   const wA2U = STATIC_W;
 
@@ -254,7 +261,7 @@ function draw(data, ageBin) {
   const topArc = arcPath(nodeUsage, nodeAnx, -height * 0.30);
   const botArc = arcPath(nodeAnx, nodeUsage, +height * 0.30);
 
-  // ✅ NO halo: only single stroke
+  // single stroke only (no halo)
   function drawArc(pathD, color, w, markerId) {
     svg.append("path")
       .attr("d", pathD)
@@ -270,8 +277,8 @@ function draw(data, ageBin) {
   drawArc(topArc, colorTop, wU2A, "arrowTop");
   drawArc(botArc, colorBot, wA2U, "arrowBot");
 
-  // ---------- percent labels (stay dynamic) ----------
-  function pctText(x, y, txt, strokeColor) {
+  // ---------- percent labels (keep dynamic, but position closer to arrows) ----------
+  function pctText(x, y, txt) {
     svg.append("text")
       .attr("x", x).attr("y", y)
       .attr("text-anchor", "middle")
@@ -279,13 +286,14 @@ function draw(data, ageBin) {
       .attr("font-weight", 900)
       .attr("fill", "#0f172a")
       .attr("paint-order", "stroke")
-      .attr("stroke", strokeColor)
-      .attr("stroke-width", 10)
+      .attr("stroke", getCss("--canvas") || "#f6f7f9")
+      .attr("stroke-width", 8)
       .text(txt);
   }
 
-  pctText(width * 0.50, height * 0.40, `${Math.round(pAnxietyUp * 100)}%`, getCss("--canvas") || "#f6f7f9");
-  pctText(width * 0.50, height * 0.80, `${Math.round(pCoping * 100)}%`, getCss("--canvas") || "#f6f7f9");
+  // closer to arrow paths
+  pctText(width * 0.50, height * 0.26, `${Math.round(pAnxietyUp * 100)}%`);
+  pctText(width * 0.50, height * 0.86, `${Math.round(pCoping * 100)}%`);
 
   // ---------- circles ----------
   function drawNode(node, fill, textColor, subColor) {
@@ -318,7 +326,7 @@ function draw(data, ageBin) {
   drawNode(nodeUsage, "#ffffff", "#111827", "#334155");
   drawNode(nodeAnx, anxietyColor, "#ffffff", "rgba(255,255,255,0.92)");
 
-  // ---------- legend (clear, full sentences) ----------
+  // ---------- legend (clear sentences, % for both arrows) ----------
   d3.select("#legendContent").html(`
     <div class="badges">
       <span class="badge">Tranche : ${ageBin.label}</span>
@@ -326,37 +334,37 @@ function draw(data, ageBin) {
     </div>
 
     <div class="legendRow" style="margin-top:10px">
-      <b>Interprétation des flèches</b>
+      <b>Ce que montrent les flèches</b>
     </div>
 
     <div class="legendRow">
-      <span class="swatch" style="background:#111827"></span>
-      <b>Usage → Anxiété</b> : part des répondants pour qui <b>l’anxiété augmente après l’usage</b>.
-      Valeur affichée : <b>${Math.round(pAnxietyUp * 100)}%</b>.
+      <span class="swatch" style="background:${colorTop}"></span>
+      <b>Usage → Anxiété</b> : <b>${Math.round(pAnxietyUp * 100)}%</b> des répondants déclarent que
+      <b>leur anxiété augmente après avoir utilisé</b> les réseaux sociaux (Q13).
     </div>
 
     <div class="legendRow">
-      <span class="swatch" style="background:grey;border:1px solid #cbd5e1"></span>
-      <b>Anxiété → Usage</b> : intensité moyenne indiquant si <b>l’anxiété incite à scroller davantage</b>.
-      Valeur affichée : <b>${Math.round(pCoping * 100)}%</b>.
+      <span class="swatch" style="background:${colorBot};border:1px solid #cbd5e1"></span>
+      <b>Anxiété → Usage</b> : <b>${Math.round(pCoping * 100)}%</b> des répondants déclarent
+      <b>utiliser davantage les réseaux sociaux lorsqu’ils se sentent anxieux</b> (Q12).
     </div>
 
     <hr/>
 
     <div class="legendRow">
-      <b>Couleur du cercle “Anxiété”</b> : résultat <b>majoritaire</b> après l’usage
+      <b>Couleur du cercle “Anxiété”</b> (effet majoritaire après usage, Q13) :
     </div>
     <div class="legendRow">
       <span class="dot" style="background: var(--green)"></span>
-      <b>Vert</b> : la majorité déclare que l’anxiété <b>diminue</b>.
+      <b>Vert</b> : la majorité répond “Diminue”.
     </div>
     <div class="legendRow">
       <span class="dot" style="background: var(--gray)"></span>
-      <b>Gris</b> : la majorité déclare que l’anxiété <b>ne change pas</b>.
+      <b>Gris</b> : la majorité répond “Ne change pas”.
     </div>
     <div class="legendRow">
       <span class="dot" style="background: var(--red)"></span>
-      <b>Rouge</b> : la majorité déclare que l’anxiété <b>augmente</b>.
+      <b>Rouge</b> : la majorité répond “Augmente”.
     </div>
 
     <div class="legendRow" style="opacity:.78;margin-top:10px">
