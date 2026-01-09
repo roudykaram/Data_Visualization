@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plateformes vs Bien-être</title>
+
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>Plateformes et bien-être</h1>
+  </header>
+
+  <main>
+
+    <!-- ===== Row 1: Questionnaire + Kaggle côte à côte ===== -->
+    <div class="grid2">
+
+      <!-- ===== Questionnaire ===== -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>Questionnaire — distribution par plateforme</h2>
+
+          <div class="controls">
+            <button id="toggleQ" class="btn">Vue : Boxplot</button>
+
+            <label>
+              Variable :
+              <select id="metricQ">
+                <option value="anxiety">Anxiété (anxiety_score)</option>
+                <option value="mood">Mood impact (mood_impact)</option>
+              </select>
+            </label>
+
+            <label>
+              Min n :
+              <select id="minNQ">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="chartQ"></div>
+        <p class="hint">
+          Boxplot = comparaison claire. Violin (option) = exploration de la forme (moins lisible si données discrètes).
+        </p>
+      </section>
+
+      <!-- ===== Kaggle ===== -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>Kaggle — stress level par plateforme</h2>
+
+          <div class="controls">
+            <button id="toggleK" class="btn">Vue : Boxplot</button>
+
+            <label>
+              Min n :
+              <select id="minNK">
+                <option value="1">1</option>
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+            </label>
+
+          </div>
+        </div>
+
+        <div id="chartK"></div>
+        <p class="hint">
+          Mode “Distribution” : Boxplot/Violin. Mode “Moyenne” : Bar chart.
+        </p>
+      </section>
+
+    </div>
+
+    <!-- ===== Design test ===== -->
+    <section class="card">
+      <div class="cardHeader">
+        <h2>Design & Scroll — test 5 minutes</h2>
+        <div class="controls">
+          <label>
+            Agrégation :
+            <select id="aggD">
+              <option value="mean" selected>Moyenne</option>
+              <option value="sum">Somme</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="chartD"></div>
+      <p class="hint">Données exploratoires : densité de contenus vus en 5 min, empilé par type.</p>
+    </section>
+
+  </main>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>

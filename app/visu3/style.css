@@ -1,0 +1,94 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-container {
+    max-width: 1100px;
+    width: 100%;
+}
+
+h1 { text-align: center; color: #2c3e50; }
+p { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+
+/* Mise en page Dashboard (Formulaire à gauche, Graphiques à droite) */
+.dashboard {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Style du Panneau Formulaire */
+.control-panel {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex: 1;
+    min-width: 250px;
+}
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;}
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.1s;
+}
+
+button:active { transform: scale(0.98); }
+
+.btn-primary { background-color: #4a90e2; color: white; }
+.btn-primary:hover { background-color: #357abd; }
+
+.btn-secondary { background-color: #e2e6ea; color: #333; }
+.btn-secondary:hover { background-color: #dbe0e5; }
+
+/* Style des Graphiques */
+.charts-wrapper {
+    flex: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 20px;
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.legend { margin-top: 15px; font-size: 13px; color: #666; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+.prev { background-color: #ccc; }
+.curr { background-color: #4a90e2; }
