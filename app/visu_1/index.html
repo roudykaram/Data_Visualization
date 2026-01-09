@@ -16,62 +16,74 @@
 
   <main>
 
-    <!-- ====== VIZ 1 : Questionnaire ====== -->
-    <section class="card">
-      <div class="cardHeader">
-        <h2>Questionnaire — distribution par plateforme</h2>
+    <!-- ===== Row 1: Questionnaire + Kaggle côte à côte ===== -->
+    <div class="grid2">
 
-        <div class="controls">
-          <label>
-            Variable :
-            <select id="metricQ">
-              <option value="anxiety">Anxiété (anxiety_score)</option>
-              <option value="mood">Mood impact (mood_impact)</option>
-            </select>
-          </label>
+      <!-- ===== Questionnaire ===== -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>Questionnaire — distribution par plateforme</h2>
 
-          <label>
-            Min réponses (n) :
-            <select id="minNQ">
-              <option value="1">1</option>
-              <option value="3">3</option>
-              <option value="5" selected>5</option>
-              <option value="8">8</option>
-              <option value="10">10</option>
-            </select>
-          </label>
+          <div class="controls">
+            <button id="toggleQ" class="btn">Vue : Boxplot</button>
+
+            <label>
+              Variable :
+              <select id="metricQ">
+                <option value="anxiety">Anxiété (anxiety_score)</option>
+                <option value="mood">Mood impact (mood_impact)</option>
+              </select>
+            </label>
+
+            <label>
+              Min n :
+              <select id="minNQ">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+              </select>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <div id="chartQ"></div>
-      <p class="hint">On filtre les plateformes avec peu de réponses pour éviter des comparaisons trompeuses.</p>
-    </section>
+        <div id="chartQ"></div>
+        <p class="hint">
+          Boxplot = comparaison claire. Violin (option) = exploration de la forme (moins lisible si données discrètes).
+        </p>
+      </section>
 
-    <!-- ====== VIZ 2 : Kaggle ====== -->
-    <section class="card">
-      <div class="cardHeader">
-        <h2>Kaggle — stress level par plateforme</h2>
+      <!-- ===== Kaggle ===== -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>Kaggle — stress level par plateforme</h2>
 
-        <div class="controls">
-          <button id="toggleK" class="btn">Vue : Boxplot</button>
+          <div class="controls">
+            <button id="toggleK" class="btn">Vue : Boxplot</button>
 
-          <label>
-            Min réponses (n) :
-            <select id="minNK">
-              <option value="1">1</option>
-              <option value="5" selected>5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </label>
+            <label>
+              Min n :
+              <select id="minNK">
+                <option value="1">1</option>
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+            </label>
+
+          </div>
         </div>
-      </div>
 
-      <div id="chartK"></div>
-      <p class="hint">Boxplot = distributions. Bar chart = moyenne (simple à lire mais moins riche).</p>
-    </section>
+        <div id="chartK"></div>
+        <p class="hint">
+          Mode “Distribution” : Boxplot/Violin. Mode “Moyenne” : Bar chart.
+        </p>
+      </section>
 
-    <!-- ====== VIZ 3 : Design test ====== -->
+    </div>
+
+    <!-- ===== Design test ===== -->
     <section class="card">
       <div class="cardHeader">
         <h2>Design & Scroll — test 5 minutes</h2>
@@ -79,7 +91,7 @@
           <label>
             Agrégation :
             <select id="aggD">
-              <option value="mean" selected>Moyenne (par plateforme)</option>
+              <option value="mean" selected>Moyenne</option>
               <option value="sum">Somme</option>
             </select>
           </label>
@@ -87,9 +99,7 @@
       </div>
 
       <div id="chartD"></div>
-      <p class="hint">
-        Données exploratoires (petit échantillon) : densité de contenus vus en 5 minutes, empilé par type (vidéo/image/texte).
-      </p>
+      <p class="hint">Données exploratoires : densité de contenus vus en 5 min, empilé par type.</p>
     </section>
 
   </main>
