@@ -1,0 +1,143 @@
+:root{
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #616e7f;
+
+  --card: #ffffff;
+  --cardBorder: rgba(15, 23, 42, .10);
+  --canvas: #f6f7f9;
+
+  --green: #22c55e;
+  --red: #ef4444;
+  --gray: #9ca3af;
+
+  --arrowTop: #5b7cfa;   /* bleu doux */
+  --arrowBot: #35c39a;   /* vert/teal doux */
+}
+
+*{ box-sizing: border-box; }
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--text);
+}
+
+.pageHeader{
+  padding: 28px 28px 10px 28px;
+}
+h1{
+  margin: 0 0 8px 0;
+  font-size: clamp(26px, 3vw, 42px);
+  letter-spacing: -0.02em;
+}
+.subtitle{
+  margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.controls{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+select{
+  border: 1px solid rgba(15, 23, 42, .15);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 600;
+  background: white;
+}
+.nValue{
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.layout{
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 18px;
+  padding: 10px 28px 28px 28px;
+  align-items: start;
+}
+
+.vizCard, .legendCard{
+  background: var(--card);
+  border: 1px solid var(--cardBorder);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+}
+
+.vizCard{
+  padding: 14px;
+  min-height: 520px;
+}
+
+.vizSvg{
+  width: 100%;
+  height: 480px; /* contrôlé aussi par JS via viewBox */
+  display: block;
+}
+
+.legendCard{
+  padding: 16px;
+}
+.legendCard h2{
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.badges{
+  display: flex;
+  gap: 8px;
+  margin: 6px 0 10px 0;
+}
+.badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.06);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.legendRow{
+  font-size: 14px;
+  color: #0f172a;
+  margin: 8px 0;
+  line-height: 1.35;
+}
+.dot{
+  display:inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-right: 6px;
+  transform: translateY(1px);
+}
+hr{
+  border: none;
+  border-top: 1px solid rgba(15,23,42,.10);
+  margin: 12px 0;
+}
+
+@media (max-width: 980px){
+  .layout{ grid-template-columns: 1fr; }
+  .legendCard{ order: 2; }
+  .vizCard{ order: 1; }
+  .vizSvg{ height: 420px; }
+}
+.swatch{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border-radius:4px;
+  margin-right:8px;
+  vertical-align:middle;
+}
+
