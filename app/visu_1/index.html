@@ -71,6 +71,27 @@
       <p class="hint">Boxplot = distributions. Bar chart = moyenne (simple à lire mais moins riche).</p>
     </section>
 
+    <!-- ====== VIZ 3 : Design test ====== -->
+    <section class="card">
+      <div class="cardHeader">
+        <h2>Design & Scroll — test 5 minutes</h2>
+        <div class="controls">
+          <label>
+            Agrégation :
+            <select id="aggD">
+              <option value="mean" selected>Moyenne (par plateforme)</option>
+              <option value="sum">Somme</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="chartD"></div>
+      <p class="hint">
+        Données exploratoires (petit échantillon) : densité de contenus vus en 5 minutes, empilé par type (vidéo/image/texte).
+      </p>
+    </section>
+
   </main>
 
   <script src="./js/main.js"></script>

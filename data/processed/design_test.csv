@@ -1,0 +1,10 @@
+person,platform,total_posts,video_count,image_count,text_count
+A,TikTok,52,52,0,0
+A,Instagram,60,55,3,2
+A,X,35,5,10,20
+B,TikTok,70,70,0,0
+B,Instagram,65,60,3,2
+B,YouTube,5,5,0,0
+C,TikTok,61,61,0,0
+C,Instagram,55,50,4,1
+C,LinkedIn,25,3,7,15
