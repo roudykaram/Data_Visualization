@@ -22,7 +22,7 @@ We structured the project into three interactive steps:
 To build a comprehensive analysis, we combined external datasets with primary data collected specifically for this project:
 
 ### 1. Custom Survey (Primary Data)
-* **Source:** Exclusive questionnaire conducted with **~150 students** (Jan 2025).
+* **Source:** Exclusive questionnaire conducted with **~267 students** (Jan 2025).
 * **Key Variables:** Instant emotional impact (mood before/after), specific habits (night scrolling), and the "re-scroll" intensity.
 * **Why:** Fills the gap in public datasets by capturing the *immediate* emotional loop.
 
@@ -32,7 +32,8 @@ To build a comprehensive analysis, we combined external datasets with primary da
 * **Why:** Provides a statistical baseline for general usage trends.
 
 ### 3. "Design & Scroll" Test
-* **Methodology:** A manual test performed by the team to quantify the "Density of Stimulation." We scrolled for 5 minutes on major platforms and counted the number of Videos vs. Images vs. Text encountered.
+* **Methodology:** A manual test performed by the team to quantify the "Density of Stimulation." We scrolled for 5 minutes on major platforms and counted the number of Videos vs. Images vs. Text encountered. And this test done by our team and three relatives helped
+us do a small dataset : data/processed/design_test.csv
 * **Result:** Explains the "addictive" potential of platforms like TikTok (high video density) vs. Instagram.
 
 
@@ -46,11 +47,11 @@ The application is divided into three main modules:
 * **Insight:** Shows the distribution of emotional impact and the "Re-scroll Score" — measuring how often users return to the app as a refuge mechanism when anxious.
 
 ### 2. Platform Comparison (`visu_1`)
-* **Concept:** Is TikTok more stressful than YouTube or any other social media?
+* **Concept:** How can we compare the impact of different **social media** platforms on our **well-being**?
 * **Chart Types:**
     * **Boxplots / Violin Plots:** To show the distribution of stress scores across different apps.
     * **Stacked Bar Chart:** Visualizes the "Density of Stimulation" (Design Test) to correlate interface speed with stress.
-* **Interaction:** Toggle between View modes (Boxplot/Violin) and Datasets (Kaggle/Questionnaire).
+* **Interaction:** Toggle between View modes (Boxplot/Violin) for the data from Kaggle and our survey.
 
 ### 3. My Diagnostic (`visu3`)
 * **Concept:** A personal assessment tool.
