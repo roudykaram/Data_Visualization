@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Usage Complet (D3.js)</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/nav.css">
+
+</head>
+<body>
+    <header class="dvnav">
+
+    <div class="dvnav__actions">
+        <a class="dvnav__btn" href="../home/index.html">Accueil</a>
+        <a class="dvnav__btn" id="dvPrev" href="../home/index.html">← Précédent</a>
+    </div>
+    </header>
+    
+
+    <div class="main-container">
+        <h1>Diagnostic : Mon usage est-il sain ?</h1>
+        <p>Répondez aux questions pour visualiser votre profil complet (8 facteurs).</p>
+
+        <div class="dashboard">
+            
+            <div class="control-panel">
+                <h3>Votre auto-évaluation</h3>
+                
+                <div class="form-group">
+                    <label>Qualité du Sommeil</label>
+                    <select id="select-sommeil">
+                        <option value="20">Insuffisante / Troubles fréquents</option>
+                        <option value="50" selected>Moyenne / Parfois fatigué(e)</option>
+                        <option value="90">Excellente / Réparateur</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Sentiment de Culpabilité</label>
+                    <select id="select-culpabilite">
+                        <option value="90">Fréquent ou intense</option>
+                        <option value="50" selected>Occasionnel</option>
+                        <option value="10">Absent ou rare</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Productivité au travail / études</label>
+                    <select id="select-productivite">
+                        <option value="20">Faible / Difficultés de concentration</option>
+                        <option value="50" selected>Correcte / Variable</option>
+                        <option value="90">Élevée / Très efficace</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Vie Sociale</label>
+                    <select id="select-social">
+                        <option value="20">Isolement ressenti</option>
+                        <option value="50" selected>Interactions modérées</option>
+                        <option value="90">Vie sociale active</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Santé Générale</label>
+                    <select id="select-sante">
+                        <option value="20">Fragile / Douleurs fréquentes</option>
+                        <option value="50" selected>Bonne</option>
+                        <option value="90">Excellente</option>
+                    </select>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+                <div class="form-group">
+                    <label>Temps d'écran quotidien (Scroll)</label>
+                    <select id="select-temps">
+                        <option value="90">Plus de 4 heures (Élevé)</option>
+                        <option value="70">2 à 3 heures</option>
+                        <option value="50" selected>1 à 2 heures</option>
+                        <option value="20">Moins de 30 minutes (Faible)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Niveau d'Anxiété</label>
+                    <select id="select-anxiete">
+                        <option value="90">Élevé (Stress constant)</option>
+                        <option value="50" selected>Modéré</option>
+                        <option value="10">Faible (Serein)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Contrôle de soi (Capacité à s'arrêter)</label>
+                    <select id="select-controle">
+                        <option value="20">Difficile (Perte de notion du temps)</option>
+                        <option value="50" selected>Variable</option>
+                        <option value="90">Total (J'arrête quand je veux)</option>
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button id="btn-calculer" class="btn-primary">Calculer mon profil</button>
+                    <button id="btn-random" class="btn-secondary">Générer un exemple aléatoire</button>
+                </div>
+            </div>
+
+            <div class="charts-wrapper">
+                <div class="chart-card">
+                    <h3>Niveau de Risque Global</h3>
+                    <div id="gauge-container"></div>
+                    <p style="font-size: 12px; color: #888; text-align: center; margin-top: -10px;">Calculé sur la base de vos 8 réponses</p>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Détail des 8 facteurs</h3>
+                    <div id="radar-container"></div>
+                    <div class="legend">
+                        <span class="dot prev"></span> Profil Précédent
+                        <span class="dot curr"></span> Votre Résultat
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+:root {
+  /* --- PALETTE LIGHT & PASTEL --- */
+  --bg: #f8fafc;        /* Couleur de fond de sécurité */
+  --panel: #ffffff;     /* Fond des blocs (Blanc pur) */
+  --card: #ffffff;      /* Fond des cartes */
+  --text: #0f172a;      /* Texte principal (Bleu nuit très sombre) */
+  --muted: #475569;     /* Texte secondaire (Gris bleuté) */
+  --border: #e2e8f0;    /* Bordures subtiles */
+  --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.06); /* Ombre très douce et moderne */
+  --radius: 18px;       /* Arrondi des angles */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* --- FOND PASTEL NUANCÉ --- */
+  background-color: var(--bg);
+  background-image: 
+    /* 1. Coin haut gauche : Lavande douce */
+    radial-gradient(800px 600px at 0% 0%, #e0e7ff 0%, transparent 60%),
+    /* 2. Coin haut droite : Rose poudré */
+    radial-gradient(800px 600px at 100% 0%, #fce7f3 0%, transparent 50%),
+    /* 3. Bas centre : Bleu glacé */
+    radial-gradient(1000px 500px at 50% 100%, #e0f2fe 0%, transparent 60%);
+    
+  color: var(--text);
+
+  /* --- CENTRAGE VERTICAL --- */
+  min-height: 100vh;      /* Force la page à prendre toute la hauteur */
+  display: flex;          /* Active le mode Flexbox */
+  flex-direction: column; /* Organise en colonne */
+  justify-content: center;/* Centre verticalement */
+}
+
+.hero {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 18px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.hero__content {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  /* Badge bleu clair style "Pill" */
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+h1 {
+  margin: 16px 0 12px 0;
+  font-size: 38px;
+  letter-spacing: -0.03em;
+  color: #1e293b; /* Titre sombre */
+}
+
+.subtitle {
+  margin: 0 0 20px 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cta {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cta:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.cta.primary {
+  background: #2563eb; /* Bleu vif */
+  border-color: #2563eb;
+  color: white;
+}
+
+.cta.primary:hover {
+  background: #1d4ed8;
+}
+
+.hero__viz {
+  /* Si tu as une image à droite, décommente les lignes ci-dessous */
+  /* background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow); */
+  
+  /* Sinon, on cache la colonne vide pour centrer le texte */
+  display: none; 
+}
+
+/* Si on cache la viz, on force le contenu à prendre toute la largeur */
+/* Note: Si tu mets une image, retire ce bloc CSS ci-dessous */
+@media (min-width: 981px) {
+  .hero { grid-template-columns: 1fr; max-width: 800px; text-align: center; }
+  .ctaRow { justify-content: center; }
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 18px 40px 18px;
+}
+
+.sectionTitle {
+  margin: 24px 0 16px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center; /* Titres de section centrés */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.12);
+  border-color: #cbd5e1;
+}
+
+.card__tag {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #2563eb;
+  background: #eff6ff;
+  margin-bottom: 12px; /* Espace sous l'icone */
+}
+
+.card h3 {
+  margin: 8px 0 8px 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.card__link {
+  display: inline-block;
+  margin-top: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #2563eb;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.footNote {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  color: var(--muted);
+  font-size: 13px;
+  background: #ffffff;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 980px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .grid { grid-template-columns: 1fr; }
+  .ctaRow { justify-content: center; }
+  .hero__content { padding: 24px; }
+}

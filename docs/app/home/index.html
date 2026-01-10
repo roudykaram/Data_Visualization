@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Réseaux sociaux & Bien-être — Accueil</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero__content">
+      <div class="badge">Projet DataViz — M2 Lyon 1</div>
+      <h1>Réseaux sociaux & Bien-être</h1>
+      <p class="subtitle">
+        Les réseaux sociaux occupent une place centrale dans nos usages quotidiens, mais leurs effets sur le bien-être restent complexes et parfois contradictoires.
+Ce projet propose une exploration visuelle des liens entre usage des plateformes, design des interfaces et niveaux de stress ou d’anxiété, en combinant données de questionnaires, dataset externe et visualisations interactives. L’objectif est à la fois de comprendre les mécanismes à l’œuvre, de comparer les plateformes entre elles, et de permettre à chacun de situer son propre usage.
+      </p>
+
+
+    </div>
+
+
+  </header>
+
+  <main class="container">
+    <h2 class="sectionTitle">Les 3 étapes de l'analyse</h2>
+
+    <div class="grid">
+      <a class="card" href="../vis2.2/index.html">
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+            <path d="M16 21h5v-5"></path>
+          </svg>
+        </div>
+        <h3>Comprendre le cycle</h3>
+        <p>Analysez la <strong>boucle de rétroaction</strong> : visualisez la distribution réelle de l'impact émotionnel (Donut Chart) et mesurez l'intensité du <em>"re-scroll"</em> utilisé comme mécanisme de refuge.</p>
+        <span class="card__link">Ouvrir →</span>
+      </a>
+
+      <a class="card" href="../visu_1/index.html">
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <h3>Comparer les plateformes</h3>
+        <p>TikTok est-il plus anxiogène que YouTube ? Confrontez les <strong>niveaux de stress</strong> déclarés (Boxplots et Violin Plots) aux <strong>mécanismes de design</strong> (densité de stimulation) pour chaque application.</p>
+        <span class="card__link">Ouvrir →</span>
+      </a>
+
+      <a class="card" href="../visu3/index.html">
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <h3>Mon diagnostic</h3>
+        <p>Votre usage est-il à risque ? Calculez votre <strong>Score Global</strong>, visualisez votre profil sur <strong>8 facteurs clés</strong> (Sommeil, Culpabilité, Productivité...) et comparez-vous à la moyenne.</p>
+        <span class="card__link">Ouvrir →</span>
+      </a>
+    </div>
+
+    <footer class="footer">
+      <div class="footNote">
+        Astuce : utilisez les boutons <strong>Accueil / Précédent / Suivant</strong> en haut de chaque visualisation.
+      </div>
+    </footer>
+  </main>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
