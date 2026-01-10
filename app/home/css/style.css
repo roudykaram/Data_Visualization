@@ -220,6 +220,40 @@ h1 {
   background: #ffffff;
 }
 
+.footerPeople{
+  display: flex;
+  justify-content: space-between; /* gauche / milieu / droite */
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.person{
+  flex: 1;
+}
+
+.person.left{ text-align: left; }
+.person.center{ text-align: center; }
+.person.right{ text-align: right; }
+
+.personName{
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.personLink{
+  display: inline-block;
+  margin-top: 4px;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.personLink:hover{
+  text-decoration: underline;
+}
+
 /* --- RESPONSIVE --- */
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; text-align: center; }
