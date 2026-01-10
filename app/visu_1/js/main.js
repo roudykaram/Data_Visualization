@@ -529,6 +529,51 @@ function renderD() {
     .attr("height", d => y(d.y0) - y(d.y1))
     .attr("width", x.bandwidth())
     .attr("stroke", "#333");
+
+      // ===== LÉGENDE (Vidéos / Photos / Texte) =====
+  const legendLabels = {
+    video: "Vidéos",
+    image: "Photos",
+    text: "Texte"
+  };
+
+  // Position : en haut à droite du graphe
+  const legendX = innerW - 140;  // ajuste si besoin (ex: -160)
+  const legendY = 0;
+
+  const legend = g.append("g")
+    .attr("class", "legendD")
+    .attr("transform", `translate(${legendX}, ${legendY})`);
+
+  legend.append("text")
+    .attr("x", 0)
+    .attr("y", 0)
+    .text("Contenu")
+    .style("font-size", "13px")
+    .style("font-weight", "700")
+    .style("fill", "#333");
+
+  const item = legend.selectAll(".legend-item")
+    .data(keys)
+    .enter()
+    .append("g")
+    .attr("class", "legend-item")
+    .attr("transform", (d, i) => `translate(0, ${10 + i * 20})`);
+
+  item.append("rect")
+    .attr("width", 14)
+    .attr("height", 14)
+    .attr("rx", 3)
+    .attr("fill", d => color(d))
+    .attr("stroke", "#333")
+    .attr("stroke-width", 0.6);
+
+  item.append("text")
+    .attr("x", 20)
+    .attr("y", 11)
+    .text(d => legendLabels[d] ?? d)
+    .style("font-size", "12px")
+    .style("fill", "#333");
 }
 
 // ===== Render Q/K =====
