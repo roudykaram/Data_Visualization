@@ -64,8 +64,8 @@ The application is divided into three main modules:
 
 * **Frontend:** HTML5, CSS3 (Custom Dark Mode & Responsive Design).
 * **Visualization Library:** **D3.js (v7)** for all charts.
-* **Data Processing:** Python (Pandas) for cleaning and merging CSV files.
-* **Architecture:** Single Page Application (SPA) feel with navigation headers.
+* **Data Processing:** Python (Pandas) for cleaning CSV files.
+* **Architecture:** Single Page Application (SPA) with navigation headers.
 
 ##  Project Structure
 
