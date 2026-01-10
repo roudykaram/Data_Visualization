@@ -1,7 +1,7 @@
 // ===== Paths =====
-const PATH_Q = "../../../data/processed/questionnaire_clean.csv";
-const PATH_K = "../../../data/raw/Mental_Health_and_Social_Media_Balance_Dataset.csv";
-const PATH_D = "../../../data/processed/design_test.csv";
+const PATH_Q = "../../data/processed/questionnaire_clean.csv";
+const PATH_K = "../../data/raw/Mental_Health_and_Social_Media_Balance_Dataset.csv";
+const PATH_D = "../../data/processed/design_test.csv";
 
 // ===== Common chart config =====
 const W = 900;
