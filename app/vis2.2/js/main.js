@@ -292,7 +292,7 @@ function updateLegend(n, pieData, copingScore, pctWorse) {
         "Quand je suis anxieux, j'ai tendance à retourner scroller pour me calmer."
       </div>
       <div class="legendRow" style="margin-top:8px">
-        Score moyen : <strong>${copingScore} / 10</strong>
+        Score d'intensité : <strong>${copingScore} / 10</strong>
       </div>
     </div>
   `;
