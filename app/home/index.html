@@ -13,84 +13,56 @@
       <div class="badge">Projet DataViz — M2 Lyon 1</div>
       <h1>Réseaux sociaux & Bien-être</h1>
       <p class="subtitle">
-        Une exploration structurée : comprendre le cycle, comparer les plateformes,
-        puis se situer avec un diagnostic personnalisé.
+        Les réseaux sociaux occupent une place centrale dans nos usages quotidiens, mais leurs effets sur le bien-être restent complexes et parfois contradictoires.
+Ce projet propose une exploration visuelle des liens entre usage des plateformes, design des interfaces et niveaux de stress ou d’anxiété, en combinant données de questionnaires, dataset externe et visualisations interactives. L’objectif est à la fois de comprendre les mécanismes à l’œuvre, de comparer les plateformes entre elles, et de permettre à chacun de situer son propre usage.
       </p>
 
-      <div class="ctaRow">
-        <a class="cta primary" href="../vis2.2/index.html">Commencer → Cycle</a>
-        <a class="cta" href="../visu_1/index.html">Comparer plateformes</a>
-        <a class="cta" href="../visu3/index.html">Faire mon diagnostic</a>
-      </div>
+
     </div>
 
-    <div class="hero__viz">
-      <!-- Illustration SVG légère (pas d’image externe) -->
-      <svg viewBox="0 0 520 360" role="img" aria-label="Illustration du projet">
-        <defs>
-          <linearGradient id="g" x1="0" x2="1">
-            <stop offset="0" stop-color="#5b8def" stop-opacity="0.25"/>
-            <stop offset="1" stop-color="#f59e0b" stop-opacity="0.20"/>
-          </linearGradient>
-        </defs>
 
-        <rect x="18" y="18" width="484" height="324" rx="22" fill="url(#g)" stroke="rgba(15,23,42,.12)"/>
-
-        <!-- Nodes -->
-        <circle cx="130" cy="180" r="46" fill="white" stroke="rgba(15,23,42,.18)" />
-        <text x="130" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">USAGE</text>
-        <text x="130" y="192" text-anchor="middle" font-size="11" fill="#475569">scroll / temps</text>
-
-        <circle cx="390" cy="180" r="54" fill="white" stroke="rgba(15,23,42,.18)" />
-        <text x="390" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">ANXIÉTÉ</text>
-        <text x="390" y="192" text-anchor="middle" font-size="11" fill="#475569">après usage</text>
-
-        <!-- Arrow -->
-        <path d="M176 164 C240 120, 280 120, 344 164"
-              fill="none" stroke="rgba(15,23,42,.35)" stroke-width="4" stroke-linecap="round"/>
-        <polygon points="344,164 330,156 332,171" fill="rgba(15,23,42,.35)"/>
-        <text x="260" y="118" text-anchor="middle" font-size="12" fill="#334155">Impact émotionnel</text>
-
-        <!-- Return dashed -->
-        <path d="M344 204 C280 248, 240 248, 176 204"
-              fill="none" stroke="rgba(15,23,42,.35)" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round"/>
-        <polygon points="176,204 190,196 188,211" fill="rgba(15,23,42,.35)"/>
-        <text x="260" y="264" text-anchor="middle" font-size="12" fill="#334155">Tendance au re-scroll</text>
-
-        <!-- Mini panels -->
-        <rect x="70" y="44" width="160" height="70" rx="14" fill="white" stroke="rgba(15,23,42,.12)"/>
-        <text x="150" y="78" text-anchor="middle" font-size="12" fill="#334155">Comparer plateformes</text>
-        <text x="150" y="96" text-anchor="middle" font-size="11" fill="#64748b">boxplots / violins</text>
-
-        <rect x="290" y="44" width="160" height="70" rx="14" fill="white" stroke="rgba(15,23,42,.12)"/>
-        <text x="370" y="78" text-anchor="middle" font-size="12" fill="#334155">Diagnostic</text>
-        <text x="370" y="96" text-anchor="middle" font-size="11" fill="#64748b">profil 8 facteurs</text>
-      </svg>
-    </div>
   </header>
 
   <main class="container">
-    <h2 class="sectionTitle">Les 3 étapes</h2>
+    <h2 class="sectionTitle">Les 3 étapes de l'analyse</h2>
 
     <div class="grid">
       <a class="card" href="../vis2.2/index.html">
-        <div class="card__tag">1</div>
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+            <path d="M16 21h5v-5"></path>
+          </svg>
+        </div>
         <h3>Comprendre le cycle</h3>
-        <p>Visualisation explicative : usage ↔ anxiété, et boucle de retour (re-scroll).</p>
+        <p>Analysez la <strong>boucle de rétroaction</strong> : visualisez la distribution réelle de l'impact émotionnel (Donut Chart) et mesurez l'intensité du <em>"re-scroll"</em> utilisé comme mécanisme de refuge.</p>
         <span class="card__link">Ouvrir →</span>
       </a>
 
       <a class="card" href="../visu_1/index.html">
-        <div class="card__tag">2</div>
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
         <h3>Comparer les plateformes</h3>
-        <p>Questionnaire vs Kaggle : distributions par plateforme + test “Design & Scroll”.</p>
+        <p>TikTok est-il plus anxiogène que YouTube ? Confrontez les <strong>niveaux de stress</strong> déclarés (Boxplots et Violin Plots) aux <strong>mécanismes de design</strong> (densité de stimulation) pour chaque application.</p>
         <span class="card__link">Ouvrir →</span>
       </a>
 
       <a class="card" href="../visu3/index.html">
-        <div class="card__tag">3</div>
+        <div class="card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
         <h3>Mon diagnostic</h3>
-        <p>Auto-évaluation : score global + radar 8 facteurs + comparaison à la moyenne.</p>
+        <p>Votre usage est-il à risque ? Calculez votre <strong>Score Global</strong>, visualisez votre profil sur <strong>8 facteurs clés</strong> (Sommeil, Culpabilité, Productivité...) et comparez-vous à la moyenne.</p>
         <span class="card__link">Ouvrir →</span>
       </a>
     </div>
