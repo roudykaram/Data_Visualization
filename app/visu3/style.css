@@ -1,94 +1,161 @@
+/* --- style.css CORRIGÉ --- */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f6f8;
     color: #333;
+    
+    /* CORRECTION DU CENTRAGE */
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column; /* Empile la Nav et le Contenu verticalement */
+    align-items: center;    /* Centre le contenu horizontalement */
+    min-height: 100vh;
 }
 
-.main-container {
-    max-width: 1100px;
+/* S'assure que la Nav prend toute la largeur */
+header.dvnav {
     width: 100%;
+    align-self: stretch;
 }
 
-h1 { text-align: center; color: #2c3e50; }
-p { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+/* LE CONTENEUR PRINCIPAL CENTRÉ */
+.main-container {
+    width: 100%;
+    max-width: 1200px;      /* Largeur max idéale pour ton dashboard */
+    padding: 40px 20px;     /* Un peu d'espace autour */
+    box-sizing: border-box;
+    
+    /* Si le flex du body échoue, ceci force le centrage */
+    margin: 0 auto; 
+}
 
-/* Mise en page Dashboard (Formulaire à gauche, Graphiques à droite) */
+h1 { 
+    text-align: center; 
+    color: #2c3e50; 
+    margin-top: 0;
+}
+
+p { 
+    text-align: center; 
+    color: #7f8c8d; 
+    margin-bottom: 40px; 
+}
+
+/* --- DASHBOARD (Layout Gauche / Droite) --- */
 .dashboard {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 30px;              /* Plus d'espace entre les colonnes */
+    flex-wrap: wrap;        /* Passe à la ligne sur petit écran */
+    justify-content: center; /* Centre les blocs si l'écran est très large */
 }
 
-/* Style du Panneau Formulaire */
+/* 1. Panneau Formulaire (Gauche) */
 .control-panel {
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 30px;
+    border-radius: 16px; /* Arrondi plus doux */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Ombre plus moderne */
     flex: 1;
-    min-width: 250px;
+    min-width: 320px; /* Largeur min pour être lisible */
+    max-width: 400px; /* Empêche de devenir trop large */
 }
 
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;}
+.form-group { margin-bottom: 18px; }
+
+.form-group label { 
+    display: block; 
+    font-weight: 600; 
+    margin-bottom: 8px; 
+    font-size: 14px;
+    color: #2c3e50;
+}
+
 .form-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 10px 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
     font-size: 14px;
+    background-color: #fff;
+    color: #2d3436;
 }
 
 .btn-group {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 30px;
 }
 
 button {
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.1s;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 button:active { transform: scale(0.98); }
 
-.btn-primary { background-color: #4a90e2; color: white; }
-.btn-primary:hover { background-color: #357abd; }
+.btn-primary { 
+    background-color: #3b82f6; /* Bleu plus moderne */
+    color: white; 
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+.btn-primary:hover { background-color: #2563eb; }
 
-.btn-secondary { background-color: #e2e6ea; color: #333; }
-.btn-secondary:hover { background-color: #dbe0e5; }
+.btn-secondary { background-color: #f1f5f9; color: #475569; }
+.btn-secondary:hover { background-color: #e2e8f0; }
 
-/* Style des Graphiques */
+/* 2. Zone des Graphiques (Droite) */
 .charts-wrapper {
-    flex: 2;
+    flex: 2; /* Prend 2 fois plus de place que le formulaire */
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    align-content: flex-start; /* Aligne les cartes en haut */
 }
 
 .chart-card {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 30px;
     flex: 1;
-    min-width: 280px;
+    min-width: 300px; /* Pour éviter l'écrasement */
+    
+    /* Centre le contenu de la carte */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-.legend { margin-top: 15px; font-size: 13px; color: #666; }
-.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
-.prev { background-color: #ccc; }
-.curr { background-color: #4a90e2; }
+.chart-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+/* Légende */
+.legend { 
+    margin-top: 20px; 
+    font-size: 13px; 
+    color: #64748b; 
+    display: flex;
+    gap: 15px;
+}
+.dot { 
+    display: inline-block; 
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    margin-right: 6px; 
+}
+.prev { background-color: #cbd5e1; }
+.curr { background-color: #3b82f6; }
