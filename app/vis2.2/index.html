@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cycle d’usage : réseaux sociaux ↔ anxiété</title>
+  <title>Analyse Générationnelle : Cycles Réseaux Sociaux ↔ Anxiété</title>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="./css/style.css" />
@@ -12,32 +12,18 @@
 
 <body>
   <header class="dvnav">
-
     <div class="dvnav__actions">
       <a class="dvnav__btn" href="../home/index.html">Accueil</a>
       <a class="dvnav__btn primary" id="dvNext" href="../home/index.html">Suivant →</a>
     </div>
   </header>
-  <header class="pageHeader">
-    <h1>Cycle d’usage : réseaux sociaux ↔ anxiété</h1>
-    
 
-    <div class="controls">
-      <label for="ageGroup">Tranche d’âge :</label>
-      <select id="ageGroup"></select>
-      <span id="nValue" class="nValue"></span>
-    </div>
+  <header class="pageHeader">
+    <h1>Analyse Générationnelle : Le Cycle Réseaux Sociaux ↔ Anxiété</h1>
+    <p class="subtitle">Comparaison directe de l'impact émotionnel et du réflexe de consommation par tranche d'âge.</p>
   </header>
 
-  <main class="layout">
-    <section class="vizCard">
-      <svg id="cycleViz" class="vizSvg" aria-label="Cycle usage anxiété"></svg>
-    </section>
-
-    <aside class="legendCard">
-      <h2>Légende</h2>
-      <div id="legendContent"></div>
-    </aside>
+  <main id="multiplesContainer" class="multiplesGrid">
   </main>
 
   <script src="./js/main.js"></script>
