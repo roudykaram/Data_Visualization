@@ -63,6 +63,19 @@ function platformColor(p) {
   return PLATFORM_COLORS.get(p) || "#9aa0a6"; // fallback si nouvelle plateforme
 }
 
+// --- Shade helper: éclaircir/assombrir une couleur hex ---
+function shade(hex, factor) {
+  const c = d3.color(hex);
+  if (!c) return hex;
+  const hsl = d3.hsl(c);
+  hsl.l = Math.max(0, Math.min(1, hsl.l * factor));
+  return hsl.formatHex();
+}
+
+// --- id safe pour <pattern> ---
+function safeId(str) {
+  return String(str).replace(/\W+/g, "");
+}
 function pickCol(columns, candidates) {
   const lower = new Map(columns.map(c => [c.toLowerCase().trim(), c]));
   for (const cand of candidates) {
@@ -398,7 +411,7 @@ function drawViolin(containerId, rows, xKey, yKey, yTitle, minN) {
 
 // ===== Bar chart (mean) =====
 function drawBar(containerId, rows, xKey, yKey, yTitle, minN) {
-  const { g, innerW, innerH } = buildSVG(containerId);
+  const { g, innerW, innerH } = buildSVG(containerId); 
 
   const clean = rows
     .map(d => ({ x: normPlatform(d[xKey]), y: +d[yKey] }))
@@ -488,6 +501,63 @@ function renderD() {
     text: +d.text_count
   })).filter(d => d.platform && Number.isFinite(d.video) && Number.isFinite(d.image) && Number.isFinite(d.text));
 
+  // --- Patterns (hachures) pour Photos, par plateforme ---
+  const defs = svg.append("defs");
+  // Pattern neutre pour la légende (Photos en gris hachuré)
+  const legPat = defs.append("pattern")
+    .attr("id", "legendHatch")
+    .attr("patternUnits", "userSpaceOnUse")
+    .attr("width", 8)
+    .attr("height", 8)
+    .attr("patternTransform", "rotate(45)");
+
+  legPat.append("rect")
+    .attr("width", 8)
+    .attr("height", 8)
+    .attr("fill", "#bfbfbf"); // même gris que "Texte"
+
+  legPat.append("line")
+    .attr("x1", 0).attr("y1", 0)
+    .attr("x2", 0).attr("y2", 8)
+    .attr("stroke", "#5a5a5a")
+    .attr("stroke-width", 2);
+  const platforms = Array.from(new Set(cleaned.map(d => d.platform)));
+
+  platforms.forEach(p => {
+    const base = platformColor(p);
+    const pid = `photoHatch-${safeId(p)}`;
+
+    const pat = defs.append("pattern")
+      .attr("id", pid)
+      .attr("patternUnits", "userSpaceOnUse")
+      .attr("width", 8)
+      .attr("height", 8)
+      .attr("patternTransform", "rotate(45)");
+
+    // fond clair (couleur plateforme éclaircie)
+    pat.append("rect")
+      .attr("width", 8)
+      .attr("height", 8)
+      .attr("fill", shade(base, 1.20));
+
+    // traits foncés (couleur plateforme assombrie)
+    pat.append("line")
+      .attr("x1", 0).attr("y1", 0)
+      .attr("x2", 0).attr("y2", 8)
+      .attr("stroke", shade(base, 0.75))
+      .attr("stroke-width", 2);
+  });
+
+  // --- Règle de remplissage : vidéos/photos/texte, mais teinté par plateforme ---
+  function fillByPlatformAndType(platform, key) {
+    const base = platformColor(platform);
+
+    if (key === "video") return shade(base, 0.75);                 // foncé
+    if (key === "image") return `url(#photoHatch-${safeId(platform)})`; // hachuré
+    if (key === "text")  return shade(base, 1.5);                 // clair
+
+    return base;
+  }    
   const grouped = d3.group(cleaned, d => d.platform);
   const agg = Array.from(grouped, ([platform, arr]) => ({
     platform,
@@ -531,28 +601,28 @@ function renderD() {
 
   const stack = d3.stack().keys(keys);
   const series = stack(agg);
-  const color = d3.scaleOrdinal().domain(keys).range(d3.schemeTableau10);
 
   g.selectAll(".layer")
     .data(series)
     .enter()
     .append("g")
-    .attr("fill", s => color(s.key))
+    .attr("class", d => `layer layer-${d.key}`)
     .selectAll("rect")
-    .data(s => s.map(v => ({ data: v.data, y0: v[0], y1: v[1] })))
+    .data(s => s.map(v => ({ key: s.key, data: v.data, y0: v[0], y1: v[1] })))
     .enter()
     .append("rect")
     .attr("x", d => x(d.data.platform))
     .attr("y", d => y(d.y1))
     .attr("height", d => y(d.y0) - y(d.y1))
     .attr("width", x.bandwidth())
+    .attr("fill", d => fillByPlatformAndType(d.data.platform, d.key))
     .attr("stroke", "#333");
 
       // ===== LÉGENDE (Vidéos / Photos / Texte) =====
   const legendLabels = {
-    video: "Vidéos",
+    text: "Texte",
     image: "Photos",
-    text: "Texte"
+    video: "Vidéos"
   };
 
   // Position : en haut à droite du graphe
@@ -582,7 +652,13 @@ function renderD() {
     .attr("width", 14)
     .attr("height", 14)
     .attr("rx", 3)
-    .attr("fill", d => color(d))
+    .attr("fill", d => {
+      if (d === "text")  return "#e3e1e1";      // Texte
+      if (d === "image") return "url(#legendHatch)"; // Photos hachuré gris
+      if (d === "video") return "#6b6b6b";      // Vidéos
+      
+      return "#999";
+    })
     .attr("stroke", "#333")
     .attr("stroke-width", 0.6);
 
