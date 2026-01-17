@@ -1,37 +1,56 @@
-// Ordre des pages du projet
-const DV_PAGES = [
-  "../vis2.2/index.html",  // 1) cycle
-  "../visu_1/index.html",  // 2) plateformes
-  "../visu3/index.html"    // 3) diagnostic
-];
+// app/js/nav.js
+(function () {
+  const links = [
+    { label: "Accueil", href: "../home/index.html", key: "home" },
+    { label: "1. Comparer le cycle", href: "../vis2.2/index.html", key: "vis2" },
+    { label: "2. Comparer les plateformes", href: "../visu_1/index.html", key: "visu1" },
+    { label: "3. Mon diagnostic", href: "../visu3/index.html", key: "visu3" },
+  ];
 
-function getPageIndex() {
-  const href = window.location.href;
-
-  if (href.includes("/vis2.2/")) return 0;
-  if (href.includes("/visu_1/")) return 1;
-  if (href.includes("/visu3/")) return 2;
-
-  // fallback au cas où (rare)
-  return -1;
-}
-
-function setupNav() {
-  const i = getPageIndex();
-  if (i === -1) return;
-
-  const prev = document.getElementById("dvPrev");
-  const next = document.getElementById("dvNext");
-
-  if (prev) {
-    prev.href = (i > 0) ? DV_PAGES[i - 1] : "../home/index.html";
-    prev.textContent = (i > 0) ? "← Précédent" : "← Accueil";
+  // Détecte où on est (selon le dossier dans l'URL)
+  function currentKey() {
+    const p = window.location.pathname.toLowerCase();
+    if (p.includes("/home/")) return "home";
+    if (p.includes("/vis2.2/")) return "vis2";
+    if (p.includes("/visu_1/")) return "visu1";
+    if (p.includes("/visu3/")) return "visu3";
+    return null;
   }
 
-  if (next) {
-    next.href = (i < DV_PAGES.length - 1) ? DV_PAGES[i + 1] : "../home/index.html";
-    next.textContent = (i < DV_PAGES.length - 1) ? "Suivant →" : "Accueil →";
-  }
-}
+  function buildNav() {
+    const key = currentKey();
 
-window.addEventListener("load", setupNav);
+    const header = document.createElement("header");
+    header.className = "dvnav";
+
+    const actions = document.createElement("div");
+    actions.className = "dvnav__actions";
+
+    links.forEach((l) => {
+      const a = document.createElement("a");
+      a.className = "dvnav__btn";
+      a.textContent = l.label;
+      a.href = l.href;
+
+      if (l.key === key) {
+        a.classList.add("is-active");
+        a.setAttribute("aria-current", "page");
+        a.setAttribute("tabindex", "-1");
+        a.addEventListener("click", (e) => e.preventDefault());
+      }
+
+      actions.appendChild(a);
+    });
+
+    header.appendChild(actions);
+    return header;
+  }
+
+  // Injecte le menu en haut du body
+  document.addEventListener("DOMContentLoaded", () => {
+    // si tu as déjà un <header class="dvnav"> écrit en dur, on évite le doublon
+    if (document.querySelector(".dvnav")) return;
+
+    document.body.prepend(buildNav());
+  });
+})();
