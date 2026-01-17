@@ -17,7 +17,11 @@ body {
   color: var(--text);
 }
 
-.pageHeader { padding: 30px 40px 10px 40px; }
+.pageHeader{ 
+    text-align: center; 
+    color: #2c3e50; 
+    margin-top: 0;
+}
 .subtitle { color: var(--muted); font-size: 14px; margin-top: 5px; }
 
 .multiplesGrid {
