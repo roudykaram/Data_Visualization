@@ -29,10 +29,10 @@ function normPlatform(s) {
   const low = x.toLowerCase().trim();
 
   if (low === "discord") return "Discord";
-  if (low === "x(twitter)" || low === "twitter" || low === "x") return "X";
+  if (s.includes("twitter") || s === "x" || s.includes("x (twitter)") || s.includes("X(Twitter)")|| s.includes("X (Twitter)")) return "X";
   if (low === "instagram") return "Instagram";
   if (low === "tiktok") return "TikTok";
-  if (low === "whatsapp") return "WhatsApp";
+  if (low === "whatsapp") return "WhatsApp";  
   if (low === "youtube") return "YouTube";
   if (low === "facebook") return "Facebook";
   if (low === "snapchat") return "Snapchat";
@@ -41,6 +41,26 @@ function normPlatform(s) {
   if (low.includes("aucun")) return "Aucun";
 
   return x.charAt(0).toUpperCase() + x.slice(1);
+}
+
+// ===== Couleurs stables par plateforme (même couleur partout) =====
+const PLATFORM_COLORS = new Map([
+  ["Facebook",  "#4E79A7"],
+  ["YouTube",   "#F28E2B"],
+  ["TikTok",    "#E15759"],
+  ["Instagram", "#76B7B2"],
+  ["LinkedIn",  "#59A14F"],
+  ["X",         "#EDC948"],
+  ["Snapchat",  "#B07AA1"],
+  ["WhatsApp",  "#FF9DA7"],
+  ["Discord",   "#9C755F"],
+  ["Mastodon",  "#BAB0AC"],
+  ["Pinterest",  "#D37295"],
+  ["Aucun",     "#7F7F7F"],
+]);
+
+function platformColor(p) {
+  return PLATFORM_COLORS.get(p) || "#9aa0a6"; // fallback si nouvelle plateforme
 }
 
 function pickCol(columns, candidates) {
@@ -147,7 +167,7 @@ function drawBoxplot(containerId, rows, xKey, yKey, yTitle, minN) {
     .attr("class", "axis")
     .call(d3.axisLeft(y));
 
-  const color = platformColorScale(boxes.map(d => d.platform)); 
+  const color = platformColor;  // couleur stable par plateforme
 
   g.append("text")
     .attr("x", 0)
@@ -297,9 +317,7 @@ function drawViolin(containerId, rows, xKey, yKey, yTitle, minN) {
     .text(yTitle);
 
   // Couleur par plateforme (palette propre)
-  const color = d3.scaleOrdinal()
-    .domain(groups.map(d => d.platform))
-    .range(d3.schemeTableau10);
+  const color = platformColor; // fonction stable
 
   // KDE
   const yTicks = y.ticks(35);
