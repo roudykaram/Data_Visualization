@@ -72,8 +72,8 @@ svgWrapper {
   padding: 20px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
-  width: 100%; /* Le carré gris remplit sa colonne de 1/3 */
-  max-width: 350px; /* Optionnel : empêche le gris d'être trop large sur très grand écran */
+  width: 100%; 
+  max-width: 350px; 
 }
 .badges { display: flex; gap: 10px; margin-bottom: 15px; }
 .badge {
