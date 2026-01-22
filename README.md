@@ -68,7 +68,7 @@ The application is divided into three main modules:
 * **Architecture:** Single Page Application (SPA) with navigation headers.
 
 ##  Project Structure
-
+```
 .
 ├── app/
 │   ├── home/           # Landing Page (Context & Methodology)
@@ -81,3 +81,4 @@ The application is divided into three main modules:
 ├── scripts/            # Python scripts for data cleaning
 ├── index.html          # Root redirect file for GitHub Pages
 └── README.md           # Project Documentation
+```
